@@ -1,24 +1,37 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState } from 'react';
 import Quote from './Quote';
 import './App.css';
-import { Button, Container, Grid, Typography } from '@material-ui/core';
+import { Button, Grid, Typography } from '@material-ui/core';
+import {getQuote} from '../API/QuoteAPI';
 
 function App() {
+  const [quote, setQuote] = useState({});
+
+  useEffect(() => {
+    getQuote().then((q) => {
+      setQuote(q);
+    });
+  }, []);
+
+  const onBtnRefreshClick = () => {
+    getQuote().then((q) => {
+      setQuote(q);
+    });
+  }
 
   return (
     <div className="container">
-      
-      <Grid container  direction="column" spacing="5" alignItems="center" justifyContent="center">
+      <Grid direction="column" container spacing={5} alignItems="center" >
         <Grid item>
           <Typography variant="h1">
             Quotes
           </Typography>
         </Grid>
         <Grid item>
-          <Quote title="Quote Title" content="Content text"></Quote><br />
+          <Quote quote={quote}></Quote><br />
         </Grid>
         <Grid item>
-        <Button variant="contained" color="primary">
+        <Button variant="contained" onClick = {onBtnRefreshClick} color="primary">
           Refresh
         </Button>
         </Grid>
