@@ -1,21 +1,24 @@
-import React, {useEffect, useState } from 'react';
+import React, {useEffect} from 'react';
 import Quote from './Quote';
 import './App.css';
 import { Button, Grid, Typography } from '@material-ui/core';
 import {getQuote} from '../API/QuoteAPI';
+import {changeQuote} from '../Store/actions';
+import {useStore} from '../Store/store';
 
 function App() {
-  const [quote, setQuote] = useState({});
+  const {dispatch} = useStore();
 
   useEffect(() => {
+    
     getQuote().then((q) => {
-      setQuote(q);
+      dispatch(changeQuote(q));
     });
-  }, []);
+  }, [dispatch]);
 
   const onBtnRefreshClick = () => {
     getQuote().then((q) => {
-      setQuote(q);
+      dispatch(changeQuote(q));
     });
   }
 
@@ -28,7 +31,7 @@ function App() {
           </Typography>
         </Grid>
         <Grid item>
-          <Quote quote={quote}></Quote><br />
+          <Quote></Quote><br />
         </Grid>
         <Grid item>
         <Button variant="contained" onClick = {onBtnRefreshClick} color="primary">
