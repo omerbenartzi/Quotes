@@ -1,9 +1,11 @@
-import data from './data.json';
-
 export async function getQuote() {
-	return fetch("https://warm-mesa-82751.herokuapp.com/api/quotes").then(res =>  res.json()).then(res => {
-		const q = {id: res.id, content: res.quo, anime: res.anime, character: res.character};
-		console.log(q);
+	return fetch("http://ec2-54-86-131-120.compute-1.amazonaws.com:5000/api/quote")
+	.then(res => {
+		console.log(res)
+		return res.json()
+	} )
+	.then(res => {
+		const q = {id: res.id, content: res.content, anime: res.anime, character: res.character};
 		return q;
 	})
 }
